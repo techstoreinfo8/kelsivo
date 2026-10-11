@@ -5,6 +5,7 @@ import './App.css'
 
 const API_BASE_URL = (
   import.meta.env.VITE_API_BASE_URL || 'https://kelsivo-api.onrender.com'
+ // import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
 ).replace(/\/+$/, '')
 
 const INITIAL_ORDER = {
@@ -72,11 +73,16 @@ function App() {
           signal: controller.signal,
         })
 
-        const data = await response.json()
+       const data = await response.json()
 
-        if (!response.ok || !data.success) {
-          throw new Error(data.message || 'Unable to load orders.')
-        }
+if (response.status === 401 || response.status === 403) {
+  handleLogout()
+  return
+}
+
+if (!response.ok || !data.success) {
+  throw new Error(data.message || 'Unable to load orders.')
+}
 
         setOrders(data.orders)
       } catch (error) {
@@ -143,11 +149,16 @@ function App() {
         body: JSON.stringify(order),
       })
 
-      const data = await response.json()
+     const data = await response.json()
 
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || 'Unable to submit your request.')
-      }
+if (response.status === 401 || response.status === 403) {
+  handleLogout()
+  return
+}
+
+if (!response.ok || !data.success) {
+  throw new Error(data.message || 'Unable to update order status.')
+}
 
       setOrder({ ...INITIAL_ORDER })
       setSuccess(true)
