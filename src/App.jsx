@@ -4,7 +4,7 @@ import AdminLogin from './AdminLogin'
 import './App.css'
 
 const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
+  import.meta.env.VITE_API_BASE_URL || 'https://kelsivo-api.onrender.com'
 ).replace(/\/+$/, '')
 
 const INITIAL_ORDER = {
