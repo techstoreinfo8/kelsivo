@@ -3,7 +3,15 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
+const clientOrigin = (process.env.CLIENT_ORIGIN || '')
+  .trim()
+  .replace(/\/+$/, '');
+
+app.use(cors({
+  origin: clientOrigin,
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json({ limit: '20kb' }));
 
 app.get('/api/health', (req, res) => {
