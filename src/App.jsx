@@ -4,8 +4,8 @@ import AdminLogin from './AdminLogin'
 import './App.css'
 
 const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || 'https://kelsivo-api.onrender.com'
- // import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
+  //import.meta.env.VITE_API_BASE_URL || 'https://kelsivo-api.onrender.com'
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
 ).replace(/\/+$/, '')
 
 const INITIAL_ORDER = {
@@ -36,7 +36,12 @@ function formatDate(value) {
 }
 
 function App() {
-  const [page, setPage] = useState('home')
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [page, setPage] = useState(() => {
+  return window.location.pathname === '/admin'
+    ? 'admin'
+    : 'home'
+})
   const [orders, setOrders] = useState([])
   const [order, setOrder] = useState({ ...INITIAL_ORDER })
 
@@ -227,54 +232,96 @@ if (!response.ok || !data.success) {
           </h1>
         </button>
 
-        <nav className="main-nav">
-          <button
-            className={`nav-link ${page === 'home' ? 'active' : ''}`}
-            onClick={() => setPage('home')}
-          >
-            Home
-          </button>
+{/* DESKTOP NAVIGATION */}
+<nav className="main-nav desktop-nav">
+  {[
+    ['Home', 'home'],
+    ['Services', 'services'],
+    ['Safety', 'safety'],
+    ['Careers', 'careers'],
+    ['Contact Us', 'contact'],
+  ].map(([label, target]) => (
+    <button
+      key={target}
+      className={`nav-link ${page === target ? 'active' : ''}`}
+      onClick={() => setPage(target)}
+    >
+      {label}
+    </button>
+  ))}
+</nav>
 
-          <button
-            className={`nav-link ${page === 'booking' ? 'active' : ''}`}
-            onClick={() => {
-              setSuccess(false)
-              setOrderError('')
-              setPage('booking')
-            }}
-          >
-            Book Delivery
-          </button>
+{/* MOBILE HAMBURGER BUTTON */}
+<button
+  className="menu-toggle mobile-menu-toggle"
+  onClick={() => setMenuOpen((previous) => !previous)}
+  aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+  aria-expanded={menuOpen}
+>
+  <span>{menuOpen ? '✕' : '☰'}</span>
+</button>
+{menuOpen && (
+  <div
+    className="menu-overlay"
+    onClick={() => setMenuOpen(false)}
+  />
+)}
 
-          <button
-            className={`nav-link ${page === 'admin' ? 'active' : ''}`}
-            onClick={() => setPage('admin')}
-          >
-            Admin ({orders.length})
-          </button>
-        </nav>
+<aside className={`side-menu ${menuOpen ? 'open' : ''}`}>
+  <div className="side-menu-header">
+    <h2>Kelsivo<span>.</span></h2>
+
+    <button
+      className="menu-close"
+      onClick={() => setMenuOpen(false)}
+      aria-label="Close menu"
+    >
+      ✕
+    </button>
+  </div>
+
+  {[
+    ['⌂', 'Home', 'home'],
+    ['▦', 'Services', 'services'],
+    ['✓', 'Safety', 'safety'],
+    ['▣', 'Careers', 'careers'],
+    ['✉', 'Contact Us', 'contact'],
+  ].map(([icon, label, target]) => (
+    <button
+      key={target}
+      className={`side-menu-link ${page === target ? 'active' : ''}`}
+      onClick={() => {
+        setPage(target)
+        setMenuOpen(false)
+      }}
+    >
+      <span className="side-menu-icon">{icon}</span>
+      {label}
+    </button>
+  ))}
+</aside>
+<button
+  className="download-app-btn"
+  onClick={() => setPage('app')}
+>
+  Download App
+</button>
+
       </header>
 
       <main>
         {/* HOME PAGE */}
         {page === 'home' && (
           <>
-            <section className="hero">
-              <p className="tagline">
-                YOUR NEIGHBOURHOOD, DELIVERED
-              </p>
-
-              <h2>
-                Your local needs,
-                <br />
-                <span>delivered simply.</span>
-              </h2>
-
+          <section className="hero">
+          <p className="tagline">KELSIVO DELIVERY</p>
+          <h2>
+            Delivery made easy.
+            </h2>
               <p className="description">
-                Shop pickups, documents and parcel delivery,
-                all made easy with Kelsivo.
+                      Shop pickups, parcels and documents delivered
+                      to your doorstep.
               </p>
-
               <button
                 className="primary-btn"
                 onClick={() => {
@@ -295,52 +342,64 @@ if (!response.ok || !data.success) {
               </div>
             </section>
 
-            <section className="services">
-              <h2>What do you need today?</h2>
-              <p className="section-subtitle">
-                Choose a service to get started.
-              </p>
-
-              <div className="service-grid">
-                {[
-                  ['🛍️', 'Shop Pickup'],
-                  ['📦', 'Parcel Delivery'],
-                  ['📄', 'Document Delivery'],
-                  ['🛒', 'Daily Essentials'],
-                ].map(([icon, name]) => (
-                  <button
-                    className="service-card"
-                    key={name}
-                    onClick={() => {
-                      setOrder((previous) => ({
-                        ...previous,
-                        service: name,
-                      }))
-                      setSuccess(false)
-                      setOrderError('')
-                      setPage('booking')
-                    }}
-                  >
-                    <span>{icon}</span>
-                    <h3>{name}</h3>
-                    <p>Tap to request this service.</p>
-                  </button>
-                ))}
-              </div>
-            </section>
+           
           </>
         )}
+
+{/* SERVICES PAGE */}
+{page === 'services' && (
+  <section className="services page-content">
+
+    <h3 className="premium-services-title">
+      Our services
+    </h3>
+
+    <p className="section-subtitle">
+      Choose a service to get started.
+    </p>
+
+    <div className="service-grid">
+      {[
+        ['🛍️', 'Shop Pickup'],
+        ['📦', 'Parcel Delivery'],
+        ['📄', 'Document Delivery'],
+        ['🛒', 'Daily Essentials'],
+      ].map(([icon, name]) => (
+        <button
+          className="service-card"
+          key={name}
+          onClick={() => {
+            setOrder((previous) => ({
+              ...previous,
+              service: name,
+            }))
+            setSuccess(false)
+            setOrderError('')
+            setPage('booking')
+          }}
+        >
+          <span>{icon}</span>
+          <h3>{name}</h3>
+          <p>Tap to request this service.</p>
+        </button>
+      ))}
+    </div>
+  </section>
+)}
+{page === 'app' && (
+  <section className="page-content">
+    <p>App Coming Soon!</p>
+    {/* Add your Android download link here */}
+  </section>
+)}
 
         {/* BOOKING PAGE */}
         {page === 'booking' && (
           <section className="order-section page-content">
-            <p className="tagline">QUICK & CONVENIENT</p>
-            <h2>Book your delivery</h2>
-
+           <h2>Book your delivery</h2>
             <p className="section-subtitle">
-              Tell us what you need. We'll confirm availability
-              and charges before accepting your request.
-            </p>
+            Enter your delivery details to get started.
+           </p>
 
             {success ? (
               <div className="success-message">
@@ -450,6 +509,121 @@ if (!response.ok || !data.success) {
             )}
           </section>
         )}
+
+        
+{/* SAFETY PAGE */}
+{page === 'safety' && (
+  <section className="page-content info-page">
+    <p className="tagline">YOUR TRUST MATTERS</p>
+    <h2>Safety at Every Step</h2>
+    <p className="section-subtitle">
+      We aim to make every pickup and delivery simple,
+      reliable and responsible.
+    </p>
+
+    <div className="info-card">
+      <h3>Responsible Deliveries</h3>
+      <p>
+        Provide accurate pickup and delivery addresses
+        and clear item details when placing a request.
+      </p>
+    </div>
+
+    <div className="info-card">
+      <h3>Protect Your Information</h3>
+      <p>
+        Share only the information needed to arrange
+        your delivery. Never share passwords or OTPs.
+      </p>
+    </div>
+
+    <button className="primary-btn"
+      onClick={() => setPage('booking')}>
+      Book Delivery →
+    </button>
+  </section>
+)}
+
+{/* CAREERS PAGE */}
+{page === 'careers' && (
+  <section className="page-content info-page">
+    <p className="tagline">GROW WITH KELSIVO</p>
+    <h2>Careers at Kelsivo</h2>
+    <p className="section-subtitle">
+      Interested in building convenient local delivery
+      services with us?
+    </p>
+
+    <div className="info-card">
+      <h3>Join Our Network</h3>
+      <p>
+        We welcome interest from delivery partners,
+        operations professionals and people who want
+        to help us grow.
+      </p>
+      <p>
+        Email your profile and area of interest to our
+        careers contact once it has been configured.
+      </p>
+    </div>
+  </section>
+)}
+
+{/* CONTACT US PAGE */}
+{page === 'contact' && (
+  <section className="page-content info-page">
+    <p className="tagline">WE'RE HERE TO HELP</p>
+    <h2>Contact Kelsivo</h2>
+    <p className="section-subtitle">
+      Need help with a pickup or delivery request?
+      Get in touch with our team.
+    </p>
+
+    <div className="info-card">
+      <h3>Customer Support</h3>
+      <p>
+        For delivery enquiries, include your order
+        details and contact information when contacting
+        our support team.
+      </p>
+      <p>
+        Add your official business email and support
+        phone number here before publishing this page.
+      </p>
+    </div>
+
+    <button className="primary-btn"
+      onClick={() => setPage('booking')}>
+      Book Delivery →
+    </button>
+  </section>
+)}
+
+{/* DOWNLOAD APP PAGE */}
+{page === 'app' && (
+  <section className="page-content info-page">
+    <p className="tagline">KELSIVO ON THE GO</p>
+    <h2>Get the Kelsivo App</h2>
+    <p className="section-subtitle">
+      Enjoy convenient access to Kelsivo from your
+      mobile device.
+    </p>
+
+    <div className="info-card">
+      <h3>Coming Soon</h3>
+      <p>
+        App download links will appear here when the
+        Android or iOS app is ready for release.
+      </p>
+    </div>
+
+    <button className="primary-btn"
+      onClick={() => setPage('booking')}>
+      Book Delivery Online →
+    </button>
+  </section>
+)}
+
 
         {/* ADMIN PAGE */}
         {page === 'admin' && (
