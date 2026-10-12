@@ -1660,6 +1660,985 @@ footer p {
     display: none;
   }
 }
+/* Kelsivo Safety Page */
 
+.safety-page {
+  padding-bottom: 40px;
+}
+
+.safety-page .info-card {
+  margin: 18px 0;
+  text-align: left;
+}
+
+.safety-page .info-card h3 {
+  margin-bottom: 10px;
+}
+
+.safety-page .info-card p {
+  line-height: 1.7;
+}
+
+.safety-contact {
+  margin: 28px 0;
+  padding: 22px;
+  background: #f5f8f6;
+  border: 1px solid #e1eae4;
+  border-radius: 14px;
+}
+
+.safety-contact h3 {
+  margin: 0 0 10px;
+  color: #20352b;
+}
+
+.safety-contact p {
+  margin-bottom: 12px;
+  color: #65736a;
+  line-height: 1.6;
+}
+
+.safety-contact a {
+  display: inline-block;
+  color: #258354;
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.safety-contact a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .safety-contact {
+    padding: 18px;
+  }
+}
+
+/* CAREERS PAGE */
+
+.careers-page .info-card {
+  text-align: left;
+}
+
+.careers-email-label {
+  margin-top: 22px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #20352b;
+}
+
+.careers-email {
+  display: inline-block;
+  color: #258354;
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.careers-email:hover {
+  color: #19683f;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .careers-page .info-card {
+    padding: 18px;
+  }
+}
+
+/* CONTACT US PAGE */
+
+.contact-page .info-card {
+  text-align: left;
+}
+
+.contact-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.contact-detail strong {
+  color: #20352b;
+  font-size: 14px;
+}
+
+.contact-detail a {
+  color: #258354;
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.contact-detail a:hover {
+  text-decoration: underline;
+}
+
+.contact-detail p {
+  margin: 0;
+  color: #65736a;
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .contact-page .info-card {
+    padding: 18px;
+  }
+}
+
+/* Space above Book Delivery button on Services page */
+
+.services-book-btn {
+  margin-top: 30px;
+}
+
+
+/* =================================
+   KELSIVO HOME - RESPONSIVE LAYOUT
+   ================================= */
+
+.home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 64px);
+
+  width: calc(100% - 48px);
+  max-width: 1100px;
+  box-sizing: border-box;
+
+  margin: clamp(32px, 6vw, 76px) auto;
+  padding: clamp(24px, 5vw, 56px);
+
+  text-align: left;
+}
+
+.home-hero-content {
+  min-width: 0;
+}
+
+.home-hero-title {
+  max-width: 12ch;
+  font-size: clamp(2.3rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  overflow-wrap: break-word;
+  margin: 16px 0;
+}
+
+.home-hero-content .description {
+  max-width: 460px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.home-book-btn {
+  margin-top: 8px;
+  min-height: 48px;
+  max-width: 100%;
+}
+
+.home-delivery-card {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  overflow-wrap: anywhere;
+}
+
+.home-delivery-card h3 {
+  margin-top: 0;
+}
+
+.home-delivery-card p {
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* TABLET AND MOBILE */
+
+@media (max-width: 760px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+
+    width: calc(100% - 32px);
+    margin: 28px auto;
+    padding: clamp(20px, 5vw, 32px);
+
+    text-align: center;
+  }
+
+  .home-hero-title {
+    max-width: none;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+  }
+
+  .home-hero-content .description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .home-book-btn {
+    width: 100%;
+    max-width: 320px;
+    white-space: normal;
+  }
+
+  .home-delivery-card {
+    text-align: left;
+    justify-content: flex-start;
+  }
+}
+
+/* SMALL MOBILE SCREENS */
+
+@media (max-width: 380px) {
+  .home-hero {
+    width: calc(100% - 24px);
+    padding: 18px;
+    gap: 22px;
+  }
+
+  .home-hero-title {
+    font-size: 2rem;
+  }
+
+  .home-delivery-card {
+    gap: 10px;
+  }
+}
+
+/* Kelsivo mobile navigation improvements */
+
+.side-menu {
+  box-sizing: border-box;
+  max-width: 88vw;
+  width: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.side-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.side-menu-link {
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-close,
+.menu-toggle {
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+}
+
+.side-menu {
+  z-index: 999;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    gap: 12px;
+  }
+
+  .logo {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
+
+  .download-app-btn {
+    max-width: 42vw;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .side-menu-link {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .navbar {
+    gap: 6px;
+  }
+
+  .download-app-btn {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side-menu,
+  .menu-overlay {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}
+
+
+/* ==================================
+   KELSIVO - TRACK MY ORDER
+================================== */
+
+.tracking-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 56px 24px 72px;
+  color: #183b30;
+}
+
+.tracking-heading {
+  max-width: 680px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.tracking-eyebrow,
+.tracking-info-label {
+  display: inline-block;
+  color: #27805e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.tracking-heading h2 {
+  margin: 12px 0;
+  color: #173d30;
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -1.2px;
+}
+
+.tracking-heading > p {
+  margin: 0 auto;
+  max-width: 580px;
+  color: #687a72;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.tracking-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.tracking-card,
+.tracking-info-card,
+.tracking-result-card {
+  border: 1px solid #e4ece7;
+  border-radius: 22px;
+  box-shadow: 0 12px 38px rgba(23, 61, 48, 0.06);
+}
+
+.tracking-card {
+  padding: 32px;
+  background: #ffffff;
+}
+
+.tracking-card-icon {
+  display: flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  background: #eaf5ee;
+  color: #237752;
+}
+
+.tracking-card h3,
+.tracking-info-card h3 {
+  margin: 0 0 10px;
+  color: #183b30;
+  font-size: 23px;
+  font-weight: 750;
+}
+
+.tracking-card-description {
+  margin: 0 0 26px;
+  color: #718078;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.tracking-form {
+  display: grid;
+  gap: 20px;
+}
+
+.tracking-form label {
+  display: grid;
+  gap: 9px;
+  color: #304b3f;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tracking-form input {
+  width: 100%;
+  min-height: 50px;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  border: 1px solid #dce6df;
+  border-radius: 11px;
+  outline: none;
+  background: #fbfdfb;
+  color: #183b30;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tracking-form input::placeholder {
+  color: #a0ada5;
+}
+
+.tracking-form input:focus {
+  border-color: #328b64;
+  box-shadow: 0 0 0 4px rgba(50, 139, 100, 0.12);
+  background: #ffffff;
+}
+
+.tracking-submit {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 11px;
+  background: #1d6849;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.tracking-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #15543a;
+  box-shadow: 0 8px 20px rgba(29, 104, 73, 0.2);
+}
+
+.tracking-submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.tracking-secure-note {
+  margin-top: 20px;
+  color: #849188;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.tracking-info-card {
+  padding: 34px;
+  background: linear-gradient(145deg, #f0f8f2, #f9fcf8);
+}
+
+.tracking-info-card h3 {
+  margin-top: 14px;
+  font-size: 27px;
+  line-height: 1.35;
+}
+
+.tracking-info-card > p {
+  color: #65786d;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.tracking-steps {
+  display: grid;
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.tracking-step {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.tracking-step-number {
+  display: flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d5e8da;
+  border-radius: 13px;
+  background: #ffffff;
+  color: #277650;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tracking-step h4 {
+  margin: 2px 0 5px;
+  color: #254637;
+  font-size: 14px;
+}
+
+.tracking-step p {
+  margin: 0;
+  color: #748278;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.tracking-help {
+  margin-top: 30px;
+  padding: 17px;
+  border: 1px solid #deebe0;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.tracking-help strong {
+  color: #254637;
+  font-size: 13px;
+}
+
+.tracking-help p {
+  margin: 7px 0 0;
+  color: #748278;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* Order result */
+
+.tracking-result-card {
+  margin-top: 28px;
+  padding: 28px;
+  background: #ffffff;
+}
+
+.tracking-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #e8eee9;
+}
+
+.tracking-result-header h3 {
+  margin: 8px 0 0;
+  font-size: 23px;
+}
+
+.tracking-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  padding-top: 24px;
+}
+
+.tracking-result-grid > div {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.tracking-result-grid span {
+  color: #7a8980;
+  font-size: 12px;
+}
+
+.tracking-result-grid strong {
+  overflow-wrap: anywhere;
+  color: #254637;
+  font-size: 14px;
+}
+
+/* Responsive layout */
+
+@media (max-width: 760px) {
+  .tracking-page {
+    padding: 36px 16px 48px;
+  }
+
+  .tracking-heading {
+    margin-bottom: 26px;
+  }
+
+  .tracking-heading h2 {
+    letter-spacing: -0.6px;
+  }
+
+  .tracking-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .tracking-card,
+  .tracking-info-card {
+    padding: 23px;
+    border-radius: 18px;
+  }
+
+  .tracking-info-card h3 {
+    font-size: 23px;
+  }
+
+  .tracking-result-card {
+    padding: 21px;
+  }
+
+  .tracking-result-grid {
+    gap: 20px 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .tracking-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-result-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  
+}
+
+
+/* =====================================
+   KELSIVO - TRACK MY ORDER PAGE
+===================================== */
+
+.tracking-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  box-sizing: border-box;
+}
+
+/* Page heading */
+
+.tracking-heading {
+  max-width: 680px;
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.tracking-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #247348;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.tracking-heading h2 {
+  margin: 0 0 14px;
+  color: #173d2b;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.tracking-heading p {
+  max-width: 580px;
+  margin: 0 auto;
+  color: #68766d;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* Main layout */
+
+.tracking-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 560px);
+  justify-content: center;
+  align-items: start;
+  gap: 24px;
+}
+
+/* Booking card */
+
+.tracking-card {
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e5eee7;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(23, 61, 43, 0.08);
+}
+
+/* Center icon */
+
+.tracking-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 18px;
+  color: #247348;
+  background: #edf7f0;
+  border-radius: 18px;
+}
+
+/* Center Find Your Booking */
+
+.tracking-card-title {
+  margin: 0 0 12px;
+  color: #173d2b;
+  font-size: 24px;
+  font-weight: 750;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.tracking-card-description {
+  max-width: 400px;
+  margin: 0 auto 26px;
+  color: #6b786f;
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* Form */
+
+.tracking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tracking-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  color: #273c30;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.tracking-form input {
+  display: block;
+  width: 100%;
+  min-height: 50px;
+  padding: 13px 15px;
+  box-sizing: border-box;
+  color: #20372a;
+  background: #ffffff;
+  border: 1px solid #d9e4dc;
+  border-radius: 10px;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tracking-form input::placeholder {
+  color: #9aa69d;
+  font-weight: 400;
+}
+
+.tracking-form input:focus {
+  border-color: #247348;
+  box-shadow: 0 0 0 3px rgba(36, 115, 72, 0.12);
+}
+
+
+/* Mobile responsive design */
+
+@media (max-width: 600px) {
+  .tracking-page {
+    padding: 28px 16px 40px;
+  }
+
+  .tracking-heading {
+    margin-bottom: 26px;
+  }
+
+  .tracking-heading h2 {
+    font-size: 29px;
+  }
+
+  .tracking-heading p {
+    font-size: 14px;
+  }
+
+  .tracking-card {
+    padding: 24px 19px;
+    border-radius: 16px;
+  }
+
+  .tracking-card-title {
+    font-size: 22px;
+  }
+
+  .tracking-form {
+    gap: 18px;
+  }
+
+  .tracking-submit {
+    min-height: 50px;
+  }
+}
+.tracking-submit {
+  background-color: #1d4ed8;
+  color: #ffffff;
+  border: none;
+}
+
+.tracking-submit:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+/* Professional order result card */
+
+.tracking-result-card {
+  margin-top: 24px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e1eae4;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(23, 61, 43, 0.07);
+}
+
+.tracking-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tracking-result-label {
+  color: #718078;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+}
+
+.tracking-result-header h3 {
+  margin: 7px 0 0;
+  color: #173d2b;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.tracking-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 30px;
+  background: #eef2f7;
+  color: #344054;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.tracking-status.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.tracking-status.new-request {
+  background: #fff7d6;
+  color: #854d0e;
+}
+
+.tracking-status.quote-sent {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.tracking-status.confirmed {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.tracking-status.in-transit {
+  background: #cffafe;
+  color: #155e75;
+}
+
+.tracking-status.cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.tracking-result-divider {
+  height: 1px;
+  margin: 20px 0;
+  background: #e8eee9;
+}
+
+.tracking-result-detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.tracking-result-detail span {
+  color: #718078;
+  font-size: 14px;
+}
+
+.tracking-result-detail strong {
+  color: #20372a;
+  font-size: 14px;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .tracking-result-card {
+    padding: 19px;
+  }
+
+  .tracking-result-header h3 {
+    font-size: 20px;
+  }
+}
 
 

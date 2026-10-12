@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminLogin from './AdminLogin'
 import './App.css'
+import { Menu, X, Truck, PackageSearch } from 'lucide-react';
 
 const API_BASE_URL = (
   //import.meta.env.VITE_API_BASE_URL || 'https://kelsivo-api.onrender.com'
@@ -14,7 +15,8 @@ const INITIAL_ORDER = {
   delivery: '',
   details: '',
   phone: '',
-}
+  email: '',
+};
 
 const ORDER_STATUSES = [
   'New Request',
@@ -43,6 +45,11 @@ function App() {
     : 'home'
 })
   const [orders, setOrders] = useState([])
+  const [trackingId, setTrackingId] = useState('')
+const [trackingPhone, setTrackingPhone] = useState('')
+const [trackingResult, setTrackingResult] = useState(null)
+const [trackingError, setTrackingError] = useState('')
+const [trackingLoading, setTrackingLoading] = useState(false)
   const [order, setOrder] = useState({ ...INITIAL_ORDER })
 
   const [selectedOrder, setSelectedOrder] = useState(null)
@@ -118,6 +125,65 @@ if (!response.ok || !data.success) {
     setApiError('')
     setPage('admin')
   }
+
+
+  
+
+const handleTrackOrder = async (event) => {
+  event.preventDefault();
+
+  console.log('Track My Order clicked');
+  console.log('API_BASE_URL:', API_BASE_URL);
+
+  setTrackingResult(null);
+  setTrackingError('');
+
+  if (!trackingId.trim() || !trackingPhone.trim()) {
+    setTrackingError(
+      'Enter your Order ID and booking phone number.'
+    );
+    return;
+  }
+
+  setTrackingLoading(true);
+
+  try {
+    const params = new URLSearchParams({
+      orderId: trackingId.trim(),
+      phone: trackingPhone.trim(),
+    });
+
+    const url =
+      `${API_BASE_URL}/api/orders/track?${params.toString()}`;
+
+    console.log('Tracking request URL:', url);
+
+    const response = await fetch(url);
+
+    console.log('Tracking response status:', response.status);
+
+    const data = await response.json();
+
+    console.log('Tracking response data:', data);
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message || 'Unable to find your order.'
+      );
+    }
+
+    setTrackingResult(data.order);
+  } catch (error) {
+    console.error('Track order error:', error);
+
+    setTrackingError(
+      error.message || 'Unable to track your order. Please try again.'
+    );
+  } finally {
+    setTrackingLoading(false);
+  }
+};
+
 
   function handleLogout() {
     sessionStorage.removeItem('kelsivo-admin-token')
@@ -237,6 +303,7 @@ if (!response.ok || !data.success) {
   {[
     ['Home', 'home'],
     ['Services', 'services'],
+    ['Track My Order', 'tracking'],
     ['Safety', 'safety'],
     ['Careers', 'careers'],
     ['Contact Us', 'contact'],
@@ -252,14 +319,18 @@ if (!response.ok || !data.success) {
 </nav>
 
 {/* MOBILE HAMBURGER BUTTON */}
+
 <button
   className="menu-toggle mobile-menu-toggle"
   onClick={() => setMenuOpen((previous) => !previous)}
-  aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+  aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
   aria-expanded={menuOpen}
+  aria-controls="kelsivo-mobile-menu"
+  type="button"
 >
-  <span>{menuOpen ? '✕' : '☰'}</span>
+  <span aria-hidden="true">{menuOpen ? '✕' : '☰'}</span>
 </button>
+
 {menuOpen && (
   <div
     className="menu-overlay"
@@ -267,7 +338,12 @@ if (!response.ok || !data.success) {
   />
 )}
 
-<aside className={`side-menu ${menuOpen ? 'open' : ''}`}>
+<aside
+  id="kelsivo-mobile-menu"
+  className={`side-menu ${menuOpen ? 'open' : ''}`}
+  aria-label="Mobile navigation"
+  aria-hidden={!menuOpen}
+>
   <div className="side-menu-header">
     <h2>Kelsivo<span>.</span></h2>
 
@@ -283,6 +359,7 @@ if (!response.ok || !data.success) {
   {[
     ['⌂', 'Home', 'home'],
     ['▦', 'Services', 'services'],
+    ['⌕', 'Track My Order', 'tracking'],
     ['✓', 'Safety', 'safety'],
     ['▣', 'Careers', 'careers'],
     ['✉', 'Contact Us', 'contact'],
@@ -310,20 +387,24 @@ if (!response.ok || !data.success) {
       </header>
 
       <main>
+       
         {/* HOME PAGE */}
         {page === 'home' && (
-          <>
-          <section className="hero">
-          <p className="tagline">KELSIVO DELIVERY</p>
-          <h2>
-            Delivery made easy.
-            </h2>
+          <section className="hero home-hero">
+            <div className="home-hero-content">
+              <p className="tagline">KELSIVO DELIVERY</p>
+
+              <h2 className="home-hero-title">
+                Delivery made easy.
+              </h2>
+
               <p className="description">
-                      Shop pickups, parcels and documents delivered
-                      to your doorstep.
+                Shop pickups, parcels and documents delivered
+                to your doorstep.
               </p>
+
               <button
-                className="primary-btn"
+                className="primary-btn home-book-btn"
                 onClick={() => {
                   setSuccess(false)
                   setOrderError('')
@@ -332,19 +413,19 @@ if (!response.ok || !data.success) {
               >
                 Book a Delivery →
               </button>
+            </div>
 
-              <div className="delivery-card">
-                <div className="delivery-icon">🛵</div>
-                <div>
-                  <h3>Local delivery, made easy</h3>
-                  <p>From nearby shops to your doorstep.</p>
-                </div>
+            <div className="delivery-card home-delivery-card">
+              <div className="delivery-icon">🛵</div>
+
+              <div>
+                <h3>Local delivery, made easy</h3>
+                <p>From nearby shops to your doorstep.</p>
               </div>
-            </section>
-
-           
-          </>
+            </div>
+          </section>
         )}
+
 
 {/* SERVICES PAGE */}
 {page === 'services' && (
@@ -384,14 +465,44 @@ if (!response.ok || !data.success) {
         </button>
       ))}
     </div>
+    
+    <button
+      className="primary-btn services-book-btn"
+      onClick={() => setPage('booking')}
+    >
+      Book Delivery →
+    </button>
   </section>
 )}
+
+{/* DOWNLOAD APP PAGE */}
 {page === 'app' && (
-  <section className="page-content">
-    <p>App Coming Soon!</p>
-    {/* Add your Android download link here */}
+  <section className="page-content info-page">
+    <p className="tagline">KELSIVO ON THE GO</p>
+    <h2>Get the Kelsivo App</h2>
+
+    <p className="section-subtitle">
+      Enjoy convenient access to Kelsivo from your
+      mobile device.
+    </p>
+
+    <div className="info-card">
+      <h3>Coming Soon</h3>
+      <p>
+        App download links will appear here when the
+        Android or iOS app is ready for release.
+      </p>
+    </div>
+
+    <button
+      className="primary-btn"
+      onClick={() => setPage('booking')}
+    >
+      Book Delivery Online →
+    </button>
   </section>
 )}
+
 
         {/* BOOKING PAGE */}
         {page === 'booking' && (
@@ -403,12 +514,19 @@ if (!response.ok || !data.success) {
 
             {success ? (
               <div className="success-message">
-                <h3>Request submitted! 🎉</h3>
-                <p>
-                  Your request was saved successfully to the Kelsivo
-                  database. You can return to the home page or sign
-                  in as admin to manage the order.
-                </p>
+                <h3>Booking Submitted Successfully! 🎉</h3>
+
+<p>Your request has been received and saved successfully. Our team will review your booking and update its status shortly.</p>
+
+<h4>Next Steps</h4>
+
+<ul>
+<li>Your booking status is currently <strong>New Request</strong>.</li>
+<li>Check your email for booking confirmation, if provided.</li>
+<li>Use <strong>Track My Order</strong> to check your booking status.</li>
+</ul>
+
+<p>Thank you for choosing Kelsivo!</p>
 
                 <button
                   className="primary-btn"
@@ -484,6 +602,25 @@ if (!response.ok || !data.success) {
                   />
                 </label>
 
+                
+<label>
+  Email Address (optional)
+  <input
+    type="email"
+    name="email"
+    value={order.email}
+    onChange={(event) =>
+      setOrder((previous) => ({
+        ...previous,
+        email: event.target.value,
+      }))
+    }
+    placeholder="you@example.com"
+    maxLength={254}
+  />
+</label>
+
+
                 {orderError && (
                   <p role="alert" className="api-error">
                     {orderError}
@@ -513,19 +650,22 @@ if (!response.ok || !data.success) {
         
 {/* SAFETY PAGE */}
 {page === 'safety' && (
-  <section className="page-content info-page">
+  <section className="page-content info-page safety-page">
     <p className="tagline">YOUR TRUST MATTERS</p>
+
     <h2>Safety at Every Step</h2>
+
     <p className="section-subtitle">
       We aim to make every pickup and delivery simple,
-      reliable and responsible.
+      reliable, secure and responsible.
     </p>
 
     <div className="info-card">
       <h3>Responsible Deliveries</h3>
       <p>
         Provide accurate pickup and delivery addresses
-        and clear item details when placing a request.
+        and clear item details when placing a request
+        to help ensure a smooth delivery experience.
       </p>
     </div>
 
@@ -533,12 +673,36 @@ if (!response.ok || !data.success) {
       <h3>Protect Your Information</h3>
       <p>
         Share only the information needed to arrange
-        your delivery. Never share passwords or OTPs.
+        your delivery. Never share your passwords,
+        payment PINs or OTPs with anyone.
       </p>
     </div>
 
-    <button className="primary-btn"
-      onClick={() => setPage('booking')}>
+    <div className="info-card">
+      <h3>Safe and Reliable Service</h3>
+      <p>
+        Verify your order details before confirming
+        your request. If something seems suspicious,
+        contact our support team for assistance.
+      </p>
+    </div>
+
+    <div className="safety-contact">
+      <h3>Need Help?</h3>
+
+      <p>
+        Contact our support team for assistance.
+      </p>
+
+      <a href="mailto:tech.kelsivo@gmail.com">
+        ✉ tech.kelsivo@gmail.com
+      </a>
+    </div>
+
+    <button
+      className="primary-btn"
+      onClick={() => setPage('booking')}
+    >
       Book Delivery →
     </button>
   </section>
@@ -546,9 +710,11 @@ if (!response.ok || !data.success) {
 
 {/* CAREERS PAGE */}
 {page === 'careers' && (
-  <section className="page-content info-page">
+  <section className="page-content info-page careers-page">
     <p className="tagline">GROW WITH KELSIVO</p>
+
     <h2>Careers at Kelsivo</h2>
+
     <p className="section-subtitle">
       Interested in building convenient local delivery
       services with us?
@@ -556,24 +722,45 @@ if (!response.ok || !data.success) {
 
     <div className="info-card">
       <h3>Join Our Network</h3>
+
       <p>
         We welcome interest from delivery partners,
         operations professionals and people who want
         to help us grow.
       </p>
+
       <p>
-        Email your profile and area of interest to our
-        careers contact once it has been configured.
+        Send us your profile and area of interest.
+        We would love to hear from you!
       </p>
+
+      <p className="careers-email-label">
+        Career Enquiries
+      </p>
+
+      <a
+        className="careers-email"
+        href="mailto:tech.kelsivo@gmail.com?subject=Career%20Enquiry%20-%20Kelsivo"
+      >
+        ✉ tech.kelsivo@gmail.com
+      </a>
     </div>
+     <button
+      className="primary-btn"
+      onClick={() => setPage('booking')}
+    >
+      Book Delivery →
+    </button>
   </section>
 )}
 
 {/* CONTACT US PAGE */}
 {page === 'contact' && (
-  <section className="page-content info-page">
+  <section className="page-content info-page contact-page">
     <p className="tagline">WE'RE HERE TO HELP</p>
+
     <h2>Contact Kelsivo</h2>
+
     <p className="section-subtitle">
       Need help with a pickup or delivery request?
       Get in touch with our team.
@@ -581,48 +768,155 @@ if (!response.ok || !data.success) {
 
     <div className="info-card">
       <h3>Customer Support</h3>
+
       <p>
         For delivery enquiries, include your order
         details and contact information when contacting
         our support team.
       </p>
-      <p>
-        Add your official business email and support
-        phone number here before publishing this page.
-      </p>
+
+      <div className="contact-detail">
+        <strong>Business Email</strong>
+
+        <a href="mailto:tech.kelsivo@gmail.com">
+          ✉ tech.kelsivo@gmail.com
+        </a>
+      </div>
+
+      <div className="contact-detail">
+        <strong>Support Phone</strong>
+
+        <p>
+          Please contact us by email for assistance.
+        </p>
+      </div>
     </div>
 
-    <button className="primary-btn"
-      onClick={() => setPage('booking')}>
+    <button
+      className="primary-btn"
+      onClick={() => setPage('booking')}
+    >
       Book Delivery →
     </button>
   </section>
 )}
+      
 
-{/* DOWNLOAD APP PAGE */}
-{page === 'app' && (
-  <section className="page-content info-page">
-    <p className="tagline">KELSIVO ON THE GO</p>
-    <h2>Get the Kelsivo App</h2>
-    <p className="section-subtitle">
-      Enjoy convenient access to Kelsivo from your
-      mobile device.
-    </p>
 
-    <div className="info-card">
-      <h3>Coming Soon</h3>
-      <p>
-        App download links will appear here when the
-        Android or iOS app is ready for release.
+{/* TRACK MY ORDER PAGE */}
+{page === 'tracking' && (
+  <section className="tracking-page page-content">
+    <div className="tracking-heading">
+      <span className="tracking-eyebrow">
+        KELSIVO ORDER TRACKING
+      </span>
+
+      <h2>Track Your Order</h2>
+
+      <p>Check your latest order status.
       </p>
     </div>
 
-    <button className="primary-btn"
-      onClick={() => setPage('booking')}>
-      Book Delivery Online →
-    </button>
+    <div className="tracking-grid">
+      <div className="tracking-card">
+        <div className="tracking-card-icon">
+          <PackageSearch size={28} strokeWidth={1.8} />
+        </div>
+
+        <h3 className="tracking-card-title">
+          Find Your Booking
+        </h3>
+
+        <p className="tracking-card-description">
+          Enter your Order ID and booking phone number.
+        </p>
+
+       
+        <form onSubmit={handleTrackOrder}
+          className="tracking-form"
+          >
+  <label>
+    Order ID
+    <input
+      type="number"
+      min="1"
+      value={trackingId}
+      onChange={(event) => setTrackingId(event.target.value)}
+      placeholder="Enter your Order ID"
+      required
+    />
+  </label>
+
+  <label>
+    Booking Phone Number
+    <input
+      type="tel"
+      value={trackingPhone}
+      onChange={(event) => setTrackingPhone(event.target.value)}
+      placeholder="Enter your booking phone number"
+      required
+    />
+  </label>
+
+  {trackingError && (
+    <p className="api-error" role="alert">
+      {trackingError}
+    </p>
+  )}
+
+      <button
+        type="submit"
+        className="tracking-submit"
+         disabled={trackingLoading}
+       >
+          {trackingLoading ? 'Checking Order...' : 'Track My Order →'}
+      </button>
+    </form>
+
+
+     
+{trackingResult && (
+  <div className="tracking-result-card">
+    <div className="tracking-result-header">
+      <div>
+        <span className="tracking-result-label">
+          ORDER DETAILS
+        </span>
+        <h3>Order #{trackingResult.id}</h3>
+      </div>
+
+      <span
+        className={`tracking-status ${
+          trackingResult.status?.toLowerCase().replace(/\s+/g, '-')
+        }`}
+      >
+        {trackingResult.status}
+      </span>
+    </div>
+
+    <div className="tracking-result-divider" />
+
+    <div className="tracking-result-detail">
+      <span>Service</span>
+      <strong>{trackingResult.service}</strong>
+    </div>
+
+    <div className="tracking-result-detail">
+      <span>Order Status</span>
+      <strong>{trackingResult.status}</strong>
+    </div>
+    </div>
+    )}
+
+        <div className="tracking-secure-note">
+  Your booking details are used only to find your order.
+</div>
+      </div>
+    </div>
   </section>
 )}
+
+
 
 
         {/* ADMIN PAGE */}
@@ -753,6 +1047,9 @@ if (!response.ok || !data.success) {
                           <p>
                             <strong>Contact:</strong> {item.phone}
                           </p>
+                          <p>
+                            <strong>Email:</strong>  {item.email || 'Not provided'}
+                          </p>  
                         </div>
 
                         <label className="status-label">
